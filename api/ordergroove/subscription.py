@@ -2,12 +2,9 @@ from http.server import BaseHTTPRequestHandler
 import os
 import requests
 import json
-import environ
 from datetime import datetime
 
-env = environ.Env()
-environ.Env.read_env(os.path.join('', '.env'))
-OG_PASSWORD = env.get_value('OG_PASSWORD')
+OG_PASSWORD = os.getenv('OG_PASSWORD')
 
 
 class handler(BaseHTTPRequestHandler):
