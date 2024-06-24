@@ -40,8 +40,7 @@ class handler(BaseHTTPRequestHandler):
             print(event_type, og_subscription_id, next_order_date)
 
             response = requests.patch(
-                url=f"https://restapi.ordergroove.com/subscriptions/{
-                    og_subscription_id}/change_next_order_date/",
+                url=f"https://restapi.ordergroove.com/subscriptions/{og_subscription_id}/change_next_order_date/",
                 headers={
                     "accept": "application/json",
                     "content-type": "application/json",
