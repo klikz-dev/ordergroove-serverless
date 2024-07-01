@@ -2,7 +2,7 @@ from http.server import BaseHTTPRequestHandler
 import os
 import requests
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 
 OG_PASSWORD = os.getenv('OG_PASSWORD')
 
@@ -36,8 +36,8 @@ class handler(BaseHTTPRequestHandler):
             og_subscription_id = data['data']['object']['public_id']
 
             # Call Ordergroove API
-            next_order_date = get_first_date_of_next_month()
-            print(event_type, og_subscription_id, next_order_date)
+            tomorrow = get_tomorrow_date()
+            print(event_type, og_subscription_id, tomorrow)
 
             response = requests.patch(
                 url=f"https://restapi.ordergroove.com/subscriptions/{og_subscription_id}/change_next_order_date/",
@@ -47,7 +47,7 @@ class handler(BaseHTTPRequestHandler):
                     "x-api-key": OG_PASSWORD
                 },
                 json={
-                    "order_date": next_order_date
+                    "order_date": tomorrow
                 }
             )
 
@@ -77,3 +77,10 @@ def get_first_date_of_next_month():
         year = today.year if next_month > 1 else today.year + 1
 
     return f"{year:04d}-{next_month:02d}-01"
+
+
+def get_tomorrow_date():
+    today = datetime.today()
+    tomorrow = today + timedelta(days=1)
+    
+    return tomorrow.strftime("%Y-%m-%d")
